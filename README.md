@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>📱 Claude Code Android (Termux) Auto-Installer</h1>
+  <h1>📱 Open Claude Code Android (Termux) Auto-Installer</h1>
   <p><strong>Run Anthropic's leaked Claude Code globally using 100% Free OpenRouter API LLMs on Android (Termux) & Windows.</strong></p>
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
