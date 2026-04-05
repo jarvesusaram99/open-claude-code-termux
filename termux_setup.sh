@@ -71,8 +71,9 @@ echo "[2/4] Installing OpenClaude globally... (Please wait)"
 npm install -g @gitlawb/openclaude
 
 echo ""
-echo "[3/4] Generating smart launcher script..."
-cat << EOF > ~/start.sh
+echo "[3/4] Generating smart launcher command..."
+# Create the launcher script in the Termux global bin folder
+cat << EOF > $PREFIX/bin/claude
 #!/data/data/com.termux/files/usr/bin/bash
 export CLAUDE_CODE_USE_OPENAI=1
 export OPENAI_API_KEY="$API_KEY"
@@ -84,13 +85,14 @@ echo "Booting OpenClaude with \$OPENAI_MODEL..."
 openclaude
 EOF
 
-chmod +x ~/start.sh
+# Make it executable everywhere
+chmod +x $PREFIX/bin/claude
 
 echo ""
 echo "================================================="
 echo "  [DONE] Setup Complete!"
 echo ""
-echo "  To run your AI assistant anytime, type:"
-echo "  ./start.sh"
+echo "  To run your AI assistant anytime, just type:"
+echo "  claude"
 echo "================================================="
 echo ""
