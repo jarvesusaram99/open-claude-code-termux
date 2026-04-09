@@ -1,6 +1,6 @@
 <div align="center">
-  <h1>📱 Open Claude Code Android (Termux) Auto-Installer</h1>
-  <p><strong>Run Anthropic's leaked Claude Code globally using 100% Free OpenRouter API LLMs on Android (Termux) & Windows.</strong></p>
+  <h1>📱 OpenClaude Android Auto-Installer</h1>
+  <p><strong>Deploy an autonomous, hardware-aware AI agent directly onto your Android device using Termux, Shizuku, and OpenRouter LLMs.</strong></p>
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![Platform: Android | Windows](https://img.shields.io/badge/Platform-Android%20%7C%20Windows-blue.svg)]()
@@ -11,68 +11,80 @@
 
 ## 📖 About The Project
 
-Anthropic's heavily guarded **Claude Code** agentic terminal environment was leaked and made open-source through an npm source map exposure. The community quickly ported it via [OpenClaude](https://gitlawb.com/node/repos/z6MkqDnb/openclaude) to bypass Anthropic's proprietary API locks, allowing the deployment of *any* Large Language Model underneath the hood.
+This repository provides zero-effort configuration scripts to deploy **OpenClaude** into the Android ecosystem. 
 
-This repository provides **1-Click / 1-Line Setup Scripts** to instantly configure this incredibly powerful AI agent on both **Windows** and **Android (Termux) environments** utilizing entirely free models. Give it access to your file system, and watch it code full applications completely autonomously.
+Beyond simply running a terminal-based AI, this **Supercharged Edition** leverages [Shizuku](https://shizuku.rikka.app/) and the Android UIAutomator framework to give the AI physical control over your device. The AI can autonomously traverse your file system, read screen hierarchy dumps to "see" apps, and tap, swipe, and type its way through native UI tasks—effectively acting as an autonomous God-Mode assistant.
 
 ---
 
 ## ✨ Key Features
 
-- **Dynamic Free Models:** Both installers directly ping the live OpenRouter API on startup to instantly fetch, parse, and list every 100% Free model actively available on the internet (like Qwen 3.6 Plus or Gemini Flash 2.0). 
-- **Zero File Clutter:** Installs everything into non-invasive execution scripts so your global system variables remain untouched and clean.
-- **True Portability:** Allows you to autonomously code, debug, and navigate projects natively within the Android file system without requiring a rooted device.
-- **Interactive Prompts:** The terminal scripts walk you through applying your API keys and selecting a model, preventing syntax errors in manual variable injection.
+- **Autonomous UI Control:** Natively hooks into Shizuku to allow the AI agent to execute screen coordinates, swipe, and interact with visual elements dynamically. 
+- **1-Click PC Installer:** Ships with an automated PowerShell script (`pc_push_install.ps1`) that deploys all APKs, grants all necessary permissions via ADB, and bootstraps Termux silently without a single manual interaction on the phone.
+- **Dynamic Model Selection:** Automatically polls the live OpenRouter API on startup to list currently available 100% free models.
+- **Limitless Auto-Execution:** Bypasses terminal permission prompts using the injected `--limitless` execution flag and optimized `CLAUDE.md` context overrides, preventing "I am just an AI" rejection loops.
+- **Network Architecture Resilience:** Features built-in cryptographic library healing (`libngtcp2/openssl`) and DNS path reroutes to prevent common Termux HTTPS request failures under load.
 
 ---
 
-## 🚀 Installation & Usage
+## 🚀 Installation
 
-Choose your platform below. Make sure you have previously grabbed a **[Free OpenRouter API Key](https://openrouter.ai/)**.
+You can install this using either a PC (Fastest/Fully Automatic) or directly on the Phone. You will need an **[OpenRouter API Key](https://openrouter.ai/)**.
 
-### 📱 Android (Termux)
+### Option 1: Using a PC (Recommended)
 
-**Prerequisites:** You must install **Termux** from [F-Droid](https://f-droid.org/en/packages/com.termux/). *(Do not use the deprecated Google Play Store version!)*
+This method automates the entire process including APK installation, permission granting, and environment bootstrap. 
 
-1. Open Termux and grant it local storage permissions:
+1. Enable **Developer Options** and **USB Debugging** on your Android phone.
+2. Plug your phone into your Windows PC.
+3. Download this completely repository to your PC and double-click `pc_push_install.ps1`.
+   *(If it prompts you, type `R` to run once).*
+4. Once the setup completes, your Termux app will automatically launch. 
+5. In your phone's Termux terminal, type exactly what the script tells you:
    ```bash
-   termux-setup-storage
-   ```
-2. Paste this 1-line command into your terminal to pull down the auto-installer:
-   ```bash
-   bash <(curl -s https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/termux_setup.sh)
-   ```
-3. **Follow the prompts:** The script will ask for your OpenRouter Key, scrape the internet for the best free models for you to choose from, and then automatically download Node.js and globally install the `openclaude` packages in the background while you set your phone down.
-4. **Boot it up:** Whenever you want to launch it, just type:
-   ```bash
-   ./start.sh
+   bash ~/storage/shared/Download/bootstrap.sh
+   bash ~/termux_setup.sh
    ```
 
-### 💻 Windows
+### Option 2: Phone-Only (No PC)
 
-The Windows setup leverages a customized interactive batch script to seamlessly execute OpenClaude without touching your registry or system environment settings.
+If you don't have a PC, you can configure it entirely on your phone.
 
-1. **Prerequisites:** Ensure you have [Node.js](https://nodejs.org/) installed.
-2. Initialize an empty workspace folder anywhere on your computer.
-3. Download `windows_setup.bat` into that folder and simply double-click it.
-4. **Follow the prompts:** Just like Android, the Windows script will ask for your OpenRouter Key, ping the live database for free models, dynamically let you choose one, and execute the installation.
-5. **Boot it up:** A dedicated `start.bat` file will be generated for you. Double-click it anytime to launch your AI assistant!
+1. **Install Prerequisites**: Download and install the [Termux GitHub release](https://github.com/termux/termux-app/releases), [Termux:API GitHub Release](https://github.com/termux/termux-api/releases), and the [Shizuku GitHub release](https://github.com/RikkaApps/Shizuku/releases).
+2. **Grant Permissions**: Go manually to your Android Settings and grant **ALL** hardware permissions to the Termux:API app.
+3. **Start Shizuku**: Open the Shizuku app, pair and start it via **Wireless Debugging**, then tap **Export Files** (Exports `rish` to your phone's Shizuku folder).
+4. **Run the Master Command**: Open Termux and paste this exact block:
+   ```bash
+   termux-setup-storage && sleep 3 && pkg update -y && pkg install -y curl && pkg reinstall -y libngtcp2 openssl curl && curl -sL https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/termux_setup.sh -o ~/termux_setup.sh && curl -sL https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/scripts/mobile_tools.sh -o ~/scripts/mobile_tools.sh --create-dirs && curl -sL https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/scripts/setup_shizuku.sh -o ~/setup_shizuku.sh && chmod +x ~/scripts/mobile_tools.sh ~/setup_shizuku.sh && bash ~/setup_shizuku.sh && echo "export NODE_OPTIONS=--dns-result-order=ipv4first" >> ~/.bashrc && export NODE_OPTIONS=--dns-result-order=ipv4first && bash ~/termux_setup.sh
+   ```
 
 ---
 
-## ❓ FAQ
+## ⚙️ How to Launch & Use
 
-**Q: Do I need a rooted Android device for the Termux script?**
-A: **No.** It works completely natively within the Android subsystem permissions by leveraging Node.js environment paths.
+After the installer finishes, you can boot your AI system from Termux anytime using:
 
-**Q: OpenClaude says "Auth conflict: Using ANTHROPIC_API_KEY". What do I do?**
-A: Our automated `start.sh` and `start.bat` scripts actually contain built-in fixes for this. They suppress the `ANTHROPIC_API_KEY` globally so you don't receive these warnings. Just launch using our scripts instead of calling `openclaude` blindly.
+```bash
+claude --limitless
+```
 
-**Q: Can I use paid models like GPT-4o or Claude 3.5 Sonnet?**
-A: **Yes.** In either installer, when prompted to pick a free model, an option at the bottom is provided to type a **"Custom"** endpoint manually. Just paste in the exact identifier of any paid OpenRouter model (e.g. `anthropic/claude-3-opus`).
+### Try These Mobile Commands:
+Once OpenClaude is running, give it access to run commands and try asking:
+
+* *"Check my device battery and network status."* -> Utilizes the Termux command bridge.
+* *"Open my Telegram app."* -> Uses Shizuku to securely launch any application frame.
+* *"Take a screenshot of my screen."* -> Performs a local screen dump. 
+* *"Go to my device Settings and turn on Dark Mode."* -> Dumps the screen into an XML DOM tree, calculates the XYZ bounds of the buttons, and simulates a robotic human tap using `input tap`. 
+
+### Reconfiguring
+If you want to quickly switch LLM Models or update your API key at any point in the future, simply re-run the core setup:
+
+```bash
+bash ~/termux_setup.sh
+```
 
 ---
 
 ## ⚖️ Legal & Disclaimer
 
-*This repository simply provides shell configuration installers for educational and localized environment orchestration. It is not affiliated with Anthropic, nor does it host proprietary source code.*
+*This repository provides shell automation orchestrations for educational localized environment research. It is completely unaffiliated with Anthropic. It does not host proprietary code and securely interfaces using user-provided API tokens.*
