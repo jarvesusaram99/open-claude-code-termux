@@ -53,20 +53,70 @@ If you don't have a PC, you can configure it entirely on your phone.
 1. **Install Prerequisites**: Download and install the [Termux GitHub release](https://github.com/termux/termux-app/releases), [Termux:API GitHub Release](https://github.com/termux/termux-api/releases), and the [Shizuku GitHub release](https://github.com/RikkaApps/Shizuku/releases).
 2. **Grant Permissions**: Go manually to your Android Settings and grant **ALL** hardware permissions to the Termux:API app.
 3. **Start Shizuku**: Open the Shizuku app, pair and start it via **Wireless Debugging**, then tap **Export Files** (Exports `rish` to your phone's Shizuku folder).
-4. **Run the Master Command**: Open Termux and paste this exact block:
+4. **Run the Setup Commands**: Open Termux and run the commands below. You can either run them **one by one** to understand what each step does, or paste the **entire block at once** at the bottom.
+
+   #### Step-by-Step (Run One at a Time)
+
    ```bash
-   termux-setup-storage && sleep 3 && pkg update -y && pkg install -y curl && pkg reinstall -y libngtcp2 openssl curl && curl -sL https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/termux_setup.sh -o ~/termux_setup.sh && curl -sL https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/scripts/mobile_tools.sh -o ~/scripts/mobile_tools.sh --create-dirs && curl -sL https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/scripts/setup_shizuku.sh -o ~/setup_shizuku.sh && chmod +x ~/scripts/mobile_tools.sh ~/setup_shizuku.sh && bash ~/setup_shizuku.sh && echo "export NODE_OPTIONS=--dns-result-order=ipv4first" >> ~/.bashrc && export NODE_OPTIONS=--dns-result-order=ipv4first && bash ~/termux_setup.sh
+   # Step 1: Grant Termux access to your phone's storage (tap "Allow" on the popup)
+   termux-setup-storage && sleep 3
+   ```
+   ```bash
+   # Step 2: Fix package mirror (switches to the official server to avoid download errors)
+   sed -i 's|^\(deb.*\)://[^ ]*/termux-main|\1://packages.termux.dev/apt/termux-main|' $PREFIX/etc/apt/sources.list
+   ```
+   ```bash
+   # Step 3: Update package lists & install curl
+   pkg update -y && pkg install -y curl
+   ```
+   ```bash
+   # Step 4: Fix SSL/HTTPS libraries (prevents common Termux network crashes)
+   pkg reinstall -y libngtcp2 openssl curl
+   ```
+   ```bash
+   # Step 5: Download the installer scripts from GitHub
+   curl -sL https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/termux_setup.sh -o ~/termux_setup.sh
+   curl -sL https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/scripts/mobile_tools.sh -o ~/scripts/mobile_tools.sh --create-dirs
+   curl -sL https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/scripts/setup_shizuku.sh -o ~/setup_shizuku.sh
+   chmod +x ~/scripts/mobile_tools.sh ~/setup_shizuku.sh
+   ```
+   ```bash
+   # Step 6: Configure Shizuku (enables hardware & UI control)
+   bash ~/setup_shizuku.sh
+   ```
+   ```bash
+   # Step 7: Fix DNS resolution order (prevents IPv6 connection hangs)
+   echo "export NODE_OPTIONS=--dns-result-order=ipv4first" >> ~/.bashrc
+   export NODE_OPTIONS=--dns-result-order=ipv4first
+   ```
+   ```bash
+   # Step 8: Run the main installer (installs Node.js, OpenClaude, and sets up the AI)
+   bash ~/termux_setup.sh
+   ```
+
+   #### All-in-One (Paste the Whole Thing)
+
+   > If you're comfortable, paste this entire block to run everything at once:
+
+   ```bash
+   termux-setup-storage && sleep 3 && sed -i 's|^\(deb.*\)://[^ ]*/termux-main|\1://packages.termux.dev/apt/termux-main|' $PREFIX/etc/apt/sources.list && pkg update -y && pkg install -y curl && pkg reinstall -y libngtcp2 openssl curl && curl -sL https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/termux_setup.sh -o ~/termux_setup.sh && curl -sL https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/scripts/mobile_tools.sh -o ~/scripts/mobile_tools.sh --create-dirs && curl -sL https://raw.githubusercontent.com/jarvesusaram99/open-claude-code-termux/main/scripts/setup_shizuku.sh -o ~/setup_shizuku.sh && chmod +x ~/scripts/mobile_tools.sh ~/setup_shizuku.sh && bash ~/setup_shizuku.sh && echo "export NODE_OPTIONS=--dns-result-order=ipv4first" >> ~/.bashrc && export NODE_OPTIONS=--dns-result-order=ipv4first && bash ~/termux_setup.sh
    ```
 
 ---
 
 ## ⚙️ How to Launch & Use
 
-After the installer finishes, you can boot your AI system from Termux anytime using:
+After the installer finishes, you have **two ways** to launch from Termux:
+
+```bash
+claude
+```
+> **Normal Mode** — The AI asks for your confirmation before running any system command. Best for beginners or when you want full control over what gets executed.
 
 ```bash
 claude --limitless
 ```
+> **Limitless Mode** — Auto-executes all commands without asking. No restrictions, no permission prompts. The AI operates with full autonomy. ⚡
 
 ### Try These Mobile Commands:
 Once OpenClaude is running, give it access to run commands and try asking:
