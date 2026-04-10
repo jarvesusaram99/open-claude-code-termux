@@ -20,6 +20,31 @@ CYN='\033[1;36m'
 LAUNCHER="$PREFIX/bin/claude"
 CONFIG_DIR="$HOME/.openclaude"
 CONFIG_FILE="$CONFIG_DIR/config"
+OFFICIAL_REPO="https://packages.termux.dev/apt/termux-main"
+
+# ── Mirror Auto-Fix ─────────────────────────
+
+fix_mirror_if_needed() {
+    # Try a quick pkg update; if it fails (hash mismatch / stale mirror), swap to official repo
+    if ! pkg update -y 2>&1 | tail -5 | grep -qiE "^E:|failed to fetch|unexpected size"; then
+        return 0  # update succeeded, nothing to fix
+    fi
+
+    local sources="$PREFIX/etc/apt/sources.list"
+    local current_url
+    current_url=$(grep -oP 'https?://[^ ]+(?=/dists)' "$sources" 2>/dev/null | head -1)
+
+    if [ -n "$current_url" ] && [ "$current_url" != "$OFFICIAL_REPO" ]; then
+        warn "Mirror ${DIM}$current_url${R} is out of sync!"
+        info "Switching to official repo: ${B}$OFFICIAL_REPO${R}"
+        sed -i "s|$current_url|$OFFICIAL_REPO|g" "$sources"
+        pkg update -y
+        ok "Mirror fixed and package index updated."
+    else
+        warn "pkg update failed but mirror is already official. Retrying..."
+        pkg update -y
+    fi
+}
 
 # ── UI Helpers ───────────────────────────────
 
@@ -277,7 +302,8 @@ install_packages() {
     echo ""
     step 1 3 "Installing system packages..."
     echo ""
-    pkg update -y && pkg install nodejs git curl proot termux-api -y
+    fix_mirror_if_needed
+    pkg install nodejs git curl proot termux-api -y
     # Force alignment of SSL/QUIC libraries to prevent the 'libngtcp2' curl crash bug
     pkg reinstall libngtcp2 openssl curl -y
     echo ""
