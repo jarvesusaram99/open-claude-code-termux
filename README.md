@@ -6,6 +6,11 @@
   [![Platform: Android | Windows](https://img.shields.io/badge/Platform-Android%20%7C%20Windows-blue.svg)]()
   [![OpenRouter API](https://img.shields.io/badge/Powered%20By-OpenRouter-white.svg)]()
 </div>
+<br/>
+
+## 📺 Watch the Tutorial
+
+[![OpenClaude Android Tutorial](https://img.youtube.com/vi/QvVIFi3jPLM/maxresdefault.jpg)](https://youtu.be/QvVIFi3jPLM)
 
 <br/>
 
@@ -127,10 +132,10 @@ Once OpenClaude is running, give it access to run commands and try asking:
 * *"Go to my device Settings and turn on Dark Mode."* -> Dumps the screen into an XML DOM tree, calculates the XYZ bounds of the buttons, and simulates a robotic human tap using `input tap`. 
 
 ### Reconfiguring
-If you want to quickly switch LLM Models or update your API key at any point in the future, simply re-run the core setup:
+If you want to quickly switch LLM Models or update your API key at any point in the future, simply re-run:
 
 ```bash
-bash ~/termux_setup.sh
+chmod +x ~/termux_setup.sh && bash ~/termux_setup.sh
 ```
 
 ---
