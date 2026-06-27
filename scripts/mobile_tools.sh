@@ -139,11 +139,20 @@ while ((m = re.exec(xml)) !== null) {
         echo "Swiped."
         ;;
 
-    "text")
-        require_permission "Type Text: $2"
-        run_privileged "input text '$2'"
-        echo "Typed text."
-        ;;
+    "input_text")
+    require_permission "Type Text: $2"
+
+    # Join all remaining arguments into one string
+    shift
+    TEXT="$*"
+
+    # Escape spaces for Android input
+    TEXT="${TEXT// /%s}"
+
+    run_privileged "input text \"$TEXT\""
+
+    echo "Typed: $TEXT"
+    ;;
 
     "key")
         require_permission "Press Key Code $2"
